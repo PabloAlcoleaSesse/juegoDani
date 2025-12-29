@@ -1,14 +1,15 @@
+import herramientas as tools
 from inicioJuego import Partida
 import os
 
 estadoMenu: bool = True
 
 
-def menu(): 
-    while True: 
+def menu(jugador): 
+    while estadoMenu:
         mostrarMenu()
         opcion = input("Selecciona una opción (1-4): ")
-        gestionarOpcion(opcion)
+        gestionarOpcion(opcion, jugador)
 
 
 def mostrarMenu():
@@ -19,15 +20,17 @@ def mostrarMenu():
     print ("4. Salir")
 
 
-def gestionarOpcion(opcion):
+def gestionarOpcion(opcion, jugador):
+    global estadoMenu
+    
     if opcion == '1':
         print("Iniciando nuevo juego...")
 
-        os.system('cls' if os.name == 'nt' else 'clear')
+        tools.clear()
         
-        newPartida =  Partida("Jugador1")
-        newPartida.iniciar_partida()
-        opcion = False
+        partida =  Partida(jugador)
+        partida.iniciar_partida()
+        estadoMenu = False
 
     elif opcion == '2':
         print("Cargando juego...")
@@ -45,5 +48,5 @@ def gestionarOpcion(opcion):
 
 
 
-menu()
+
 
