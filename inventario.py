@@ -1,3 +1,8 @@
+import time
+
+import herramientas as tools
+
+
 class Inventario:
     def __init__(self):
         self.items = []
@@ -5,14 +10,18 @@ class Inventario:
     def menu_inventario(self):
         """Muestra un menú interactivo del inventario donde se puede ver cada item en detalle"""
         if not self.items:
+            tools.clear()
             print("\n📦 Tu inventario está vacío.")
-            input("\nPresiona ENTER para continuar...")
+            time.sleep(1.5)
+            tools.pasarFase()
             return
 
         while True:
+            tools.clear()
             print("\n" + "=" * 50)
             print("📦 INVENTARIO")
             print("=" * 50)
+            time.sleep(0.5)
 
             for i, item in enumerate(self.items, 1):
                 if hasattr(item, "nombre"):
@@ -24,10 +33,13 @@ class Inventario:
             print("=" * 50)
 
             try:
-                opcion = input("\nSelecciona un número para ver detalles (0 para salir): ").strip()
+                opcion = input(
+                    "\nSelecciona un número para ver detalles (0 para salir): "
+                ).strip()
 
                 if opcion == "0":
                     print("\n✓ Cerrando inventario...")
+                    time.sleep(1)
                     break
 
                 indice = int(opcion) - 1
@@ -37,20 +49,25 @@ class Inventario:
                     self._mostrar_detalle_item(item)
                 else:
                     print("\n❌ Número inválido. Intenta de nuevo.")
-                    input("\nPresiona ENTER para continuar...")
+                    time.sleep(1.5)
+                    tools.pasarFase()
 
             except ValueError:
                 print("\n❌ Por favor, ingresa un número válido.")
-                input("\nPresiona ENTER para continuar...")
+                time.sleep(1.5)
+                tools.pasarFase()
             except KeyboardInterrupt:
                 print("\n\n✓ Cerrando inventario...")
+                time.sleep(1)
                 break
 
     def _mostrar_detalle_item(self, item):
         """Muestra los detalles de un item específico"""
+        tools.clear()
         print("\n" + "=" * 50)
         print("🔍 DETALLE DEL ITEM")
         print("=" * 50)
+        time.sleep(0.5)
 
         if hasattr(item, "nombre"):
             print(f"\n📌 Nombre: {item.nombre}")
@@ -63,7 +80,8 @@ class Inventario:
             print("\n📝 Descripción: No disponible")
 
         print("\n" + "=" * 50)
-        input("\nPresiona ENTER para volver al inventario...")
+        time.sleep(1)
+        tools.pasarFase()
 
     def añadirObjeto(self, item):
         """Añade un objeto al inventario"""
@@ -73,8 +91,10 @@ class Inventario:
                 print(f"✓ {item.nombre} añadido al inventario.")
             else:
                 print(f"✓ {item} añadido al inventario.")
+            time.sleep(0.5)
         else:
             print("Ya tienes este objeto en tu inventario.")
+            time.sleep(1)
 
     def agregar_item(self, item):
         """Alias para añadirObjeto (compatibilidad)"""
@@ -88,9 +108,11 @@ class Inventario:
                 print(f"✗ {item.nombre} eliminado del inventario.")
             else:
                 print(f"✗ {item} eliminado del inventario.")
+            time.sleep(1)
             return True
         else:
             print("No tienes este objeto en tu inventario.")
+            time.sleep(1)
             return False
 
     def eliminar_item(self, item):
@@ -116,11 +138,13 @@ class Inventario:
         """Muestra todos los objetos del inventario con sus descripciones"""
         if not self.items:
             print("\n📦 Tu inventario está vacío.")
+            time.sleep(1)
             return
 
         print("\n" + "=" * 50)
         print("📦 INVENTARIO")
         print("=" * 50)
+        time.sleep(0.5)
         for i, item in enumerate(self.items, 1):
             if hasattr(item, "nombre") and hasattr(item, "descripcion"):
                 print(f"{i}. {item.nombre}")
@@ -128,6 +152,7 @@ class Inventario:
             else:
                 print(f"{i}. {item}")
         print("=" * 50 + "\n")
+        time.sleep(1)
 
     def mostrar_inventario(self):
         """Alias para mostrarInventario (compatibilidad)"""

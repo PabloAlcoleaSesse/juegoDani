@@ -3,8 +3,8 @@ import time
 import habitaciones as hab
 import herramientas as tools
 import objetos as obj
-from inventario import Inventario
 import puzles as puz
+from inventario import Inventario
 
 PuertaCeldaAbierta = False
 PuertaPatioAbierta = False
@@ -73,8 +73,6 @@ def Bienvenida(nombreJugador):
     time.sleep(2)
 
 
-
-
 def opcionesCeldaProtagonista(self):
     """Opciones de la celda del protagonista. Retorna la siguiente habitación o None."""
     global PuertaCeldaAbierta
@@ -109,9 +107,11 @@ def opcionesCeldaProtagonista(self):
                 )
                 time.sleep(2)
                 print("Has mordido algo duro!!... es una llave!")
+                time.sleep(1.5)
                 self.inventario.añadirObjeto(obj.llaveOxidada)
                 print("Has añadido una llave oxidada a tu inventario.")
                 time.sleep(2)
+                tools.pasarFase()
 
             # Examinar la cama
             elif opcion == 2:
@@ -119,7 +119,8 @@ def opcionesCeldaProtagonista(self):
                 print(
                     "Has decidido examinar la cama. Está rota y sucia, no hay nada interesante aquí."
                 )
-                time.sleep(1)
+                time.sleep(1.5)
+                tools.pasarFase()
 
             # Examinar la pared agrietada
             elif opcion == 3:
@@ -127,7 +128,8 @@ def opcionesCeldaProtagonista(self):
                 print(
                     "Examinas la pared agrietada, pero no encuentras nada fuera de lo común solo la via por donde escapa la felicidad de los presos."
                 )
-                time.sleep(1)
+                time.sleep(2)
+                tools.pasarFase()
 
             # Revisar la estantería
             elif opcion == 4:
@@ -137,26 +139,32 @@ def opcionesCeldaProtagonista(self):
                 print(
                     "Al fondo de la estanteria notas una pequeña bola de papel arrugada."
                 )
+                time.sleep(1)
                 self.inventario.añadirObjeto(obj.nota)
                 print("Has añadido una nota a tu inventario.")
                 time.sleep(2)
+                tools.pasarFase()
 
             # Intentar abrir la puerta de la celda
             elif opcion == 5:
                 tools.clear()
                 print("Intentas abrir la puerta de la celda.")
-                time.sleep(1)
+                time.sleep(1.5)
                 if self.inventario.tieneObjeto(obj.llaveOxidada):
                     print("Usas la llave oxidada para abrir la puerta de la celda.")
                     time.sleep(2)
+                    print("*CLICK*")
+                    time.sleep(1)
                     PuertaCeldaAbierta = True
                     print("¡La puerta se abre! Ahora puedes salir.")
                     time.sleep(2)
+                    tools.pasarFase()
                 else:
                     print(
                         "La puerta está cerrada con llave. Necesitas encontrar una llave."
                     )
-                    time.sleep(1)
+                    time.sleep(1.5)
+                    tools.pasarFase()
 
             # Gritar pidiendo ayuda
             elif opcion == 6:
@@ -164,7 +172,10 @@ def opcionesCeldaProtagonista(self):
                 print(
                     "Gritas pidiendo ayuda, pero nadie responde. Parece que estás solo aquí."
                 )
-                time.sleep(1)
+                time.sleep(2)
+                print("Solo escuchas el eco de tu propia voz...")
+                time.sleep(1.5)
+                tools.pasarFase()
 
             # Ver inventario
             elif opcion == 7:
@@ -209,79 +220,97 @@ def opcionesPasilloDeCeldas(self):
             if opcion == 1:
                 tools.clear()
                 print("Intentas abrir una celda cercana, pero está cerrada con llave.")
-                time.sleep(1)
+                time.sleep(1.5)
+                tools.pasarFase()
 
             # Examinar caja metálica
             elif opcion == 2:
                 tools.clear()
                 print("Examinas la caja metálica, tiene un candado numérico.")
-                time.sleep(1)
+                time.sleep(1.5)
                 cajaAbierta = puz.puzleCandado()
                 if cajaAbierta:
                     tools.clear()
                     print(
                         "Has abierto la caja metálica y encontrado una tarjeta magnética."
                     )
+                    time.sleep(1)
                     self.inventario.añadirObjeto(obj.tarjetaMagnetica)
                     print("Has añadido una tarjeta magnética a tu inventario.")
+                    time.sleep(2)
+                    tools.pasarFase()
                 else:
                     print("Decides no abrir la caja metálica por ahora.")
+                    time.sleep(1)
+                    tools.pasarFase()
 
             # Romper cámara
             elif opcion == 3:
                 tools.clear()
                 print("Intentas romper la cámara de seguridad, saltan chispas.")
                 time.sleep(1)
+                print("*CHISPAS* ¡Mejor no hacer eso!")
+                time.sleep(1.5)
+                tools.pasarFase()
 
             # Acceder al comedor
             elif opcion == 4:
                 tools.clear()
                 print("Intentas acceder al comedor")
-                time.sleep(2)
+                time.sleep(1.5)
                 if self.inventario.tieneObjeto(obj.tarjetaMagnetica):
                     print("Usas la tarjeta magnética para acceder al comedor.")
-                    time.sleep(2)
+                    time.sleep(1)
+                    print("*BEEP* Acceso concedido.")
+                    time.sleep(1.5)
                     EstadoMenu = False
                     return hab.comedorPresos  # Retorna la siguiente habitación
                 else:
                     print(
                         "La puerta del comedor está cerrada con una tarjeta magnética. Necesitas una para entrar."
                     )
-                    time.sleep(1)
+                    time.sleep(1.5)
+                    tools.pasarFase()
 
             # Acceder al almacén
             elif opcion == 5:
                 tools.clear()
                 print("Esta cerrado con un candado.")
-                time.sleep(1)
+                time.sleep(1.5)
                 if self.inventario.tieneObjeto(obj.destornillador):
                     print("Usas el destornillador para acceder al almacén.")
-                    time.sleep(2)
+                    time.sleep(1)
+                    print("*CLIC* La puerta se abre.")
+                    time.sleep(1.5)
                     EstadoMenu = False
                     return hab.almacen  # Retorna la siguiente habitación
                 else:
                     print(
                         "La puerta del almacén está atornillada. Necesitas un destornillador para entrar."
                     )
-                    time.sleep(1)
+                    time.sleep(1.5)
+                    tools.pasarFase()
 
             # Acceder a sala de control
             elif opcion == 6:
                 tools.clear()
-                print("Accedes a la sala de control, pero está vacía.")
-                time.sleep(1)
+                print("Te acercas a la sala de control...")
+                time.sleep(1.5)
                 if self.inventario.tieneObjeto(obj.tarjetaSeguridadAvanzada):
                     print(
                         "Usas la tarjeta de seguridad avanzada para acceder a la sala de control."
                     )
-                    time.sleep(2)
+                    time.sleep(1)
+                    print("*BEEP BEEP* Acceso autorizado.")
+                    time.sleep(1.5)
                     EstadoMenu = False
                     return hab.salaControl  # Retorna la siguiente habitación
                 else:
                     print(
                         "La puerta de la sala de control está cerrada con una tarjeta de seguridad avanzada. Necesitas una para entrar."
                     )
-                    time.sleep(1)
+                    time.sleep(1.5)
+                    tools.pasarFase()
 
             # Volver a la celda
             elif opcion == 7:
@@ -327,68 +356,88 @@ def opcionesComedor(self):
                 print("Examinas las mesas. Están sucias y llenas de restos de comida.")
                 time.sleep(2)
                 print("Encuentras una nota con un acertijo.")
+                time.sleep(1)
                 self.inventario.añadirObjeto(obj.notaAcertijo)
                 print("Has añadido una nota con un acertijo a tu inventario.")
                 time.sleep(2)
-
+                tools.pasarFase()
 
             elif opcion == 2:
                 tools.clear()
                 print("Te acercas al policia dormido. Parece inofensivo.")
-                time.sleep(1)
+                time.sleep(1.5)
+                print("Escuchas sus ronquidos. Está profundamente dormido.")
+                time.sleep(1.5)
+                tools.pasarFase()
 
             elif opcion == 3:
                 tools.clear()
-                print ("Coges el pañuelo del suelo, parece que no tiene nada especial.")
-                time.sleep(1)
+                print("Coges el pañuelo del suelo, parece que no tiene nada especial.")
+                time.sleep(1.5)
+                tools.pasarFase()
 
             elif opcion == 4:
                 tools.clear()
                 print(
                     "Lees los carteles absurdos en las paredes. Son reglas extrañas de la prisión."
                 )
-                time.sleep (2)
+                time.sleep(2)
                 print("Parece que hay una especie de cajon en el lateral del tablón.")
                 time.sleep(2)
+                print("Lo abres con cuidado...")
+                time.sleep(1)
                 self.inventario.añadirObjeto(obj.destornillador)
                 print("Has añadido un destornillador a tu inventario.")
                 print("Habia un destornillador en el cajon del tablón.")
                 time.sleep(2)
+                tools.pasarFase()
 
             elif opcion == 5:
                 tools.clear()
                 print("Intentas abrir la puerta del patio exterior.")
-                time.sleep(1)
+                time.sleep(1.5)
                 if PuertaPatioAbierta:
                     print("La puerta ya está abierta, puedes salir al patio.")
                     time.sleep(2)
                     EstadoMenu = False
                     return hab.patioExterior
                 else:
-                    print ("La puerta está cerrada. \n"
-                        " Necesitas encontrar una forma de abrirla.")
-                    time.sleep(1)
+                    print(
+                        "La puerta está cerrada. \n"
+                        " Necesitas encontrar una forma de abrirla."
+                    )
+                    time.sleep(1.5)
+                    tools.pasarFase()
 
             elif opcion == 6:
                 tools.clear()
-                print(self.jugador1.nombre + ": La verdad que un refresco carbonatado cuyo nombre no se puede decir porque no nos han pagado un solo duro me vendria bastante bien.")
+                print(
+                    self.jugador1.nombre
+                    + ": La verdad que un refresco carbonatado cuyo nombre no se puede decir porque no nos han pagado un solo duro me vendria bastante bien."
+                )
                 time.sleep(2)
                 print("Revisas la máquina expendedora, pero está vacía y rota.")
+                time.sleep(1)
                 print("Te acuerdas que no tienes dinero, ")
-                time.sleep(2)
+                time.sleep(1.5)
                 print("Estas en una prisión.")
+                time.sleep(1)
                 print("Lo tuyo nunca fue la lógica.")
                 time.sleep(2)
                 print("De la rabia decides meterle un puñetazo a la máquina.")
+                time.sleep(1)
                 print("PUM!")
-                time.sleep(2)
+                time.sleep(1.5)
                 print("Sorpresa sorpresa, la máquina suelta un trozo de cable.")
+                time.sleep(1)
                 self.inventario.añadirObjeto(obj.trozoCable)
                 print("Has añadido un trozo de cable a tu inventario.")
                 time.sleep(2)
-                print("No sabes para que puede servir un cable en una prisión, pero bueno, por si acaso.")
+                print(
+                    "No sabes para que puede servir un cable en una prisión, pero bueno, por si acaso."
+                )
                 time.sleep(2)
-
+                tools.pasarFase()
 
             elif opcion == 7:
                 tools.clear()
@@ -413,7 +462,9 @@ def opcionesAlmacen(self):
     while EstadoMenu:
         tools.clear()
         print("\nOpciones disponibles en el almacén:")
-        print("1. Revisar los estantes, ya sabes, por si acaso. (Yo que tu lo haria (Nunca sabes que puedes encontrar escondido en los estantes (Quien avisa no es traido (De verdad no me vas a hacer caso (Vale ya paro)))))")
+        print(
+            "1. Revisar los estantes, ya sabes, por si acaso. (Yo que tu lo haria (Nunca sabes que puedes encontrar escondido en los estantes (Quien avisa no es traido (De verdad no me vas a hacer caso (Vale ya paro)))))"
+        )
         print("2. Examinar los mecanismos raros.")
         print("3. Volver al pasillo.")
         print("4. Ver inventario.")
@@ -426,34 +477,55 @@ def opcionesAlmacen(self):
             if opcion == 1:
                 tools.clear()
                 print("Empiezas a revisar los estantes.")
-                time.sleep(10)
+                time.sleep(2)
+                print("Buscando...")
+                time.sleep(2)
+                print("Buscando...")
+                time.sleep(2)
+                print("Buscando...")
+                time.sleep(2)
                 print("Eureka! ")
+                time.sleep(1)
                 print("Lo has encontrado!")
+                time.sleep(1)
                 print("Polvo")
+                time.sleep(1)
                 print("Has encontrado polvo")
                 time.sleep(2)
-                print("Como dijo una vez Arthur Schopenhauer: \n"
+                print(
+                    "Como dijo una vez Arthur Schopenhauer: \n"
                     "'No hay que confiar en nadie por completo. Si se observa con atención, se descubre que casi todos los hombres piensan primero en sí mismos y solo después, y solo si les conviene, en los demás.\n"
                     "La prudencia consiste en no esperar demasiado de nadie, porque quien deposita su confianza sin reservas se expone inevitablemente a la decepción. \n"
-                    "Cuanto mejor se conoce al ser humano, más se comprende que la desconfianza no es maldad, sino una forma de lucidez.'")
-                print("Y como me gusta decir a mi: \n")
+                    "Cuanto mejor se conoce al ser humano, más se comprende que la desconfianza no es maldad, sino una forma de lucidez.'"
+                )
+                time.sleep(3)
+                print("\nY como me gusta decir a mi: \n")
+                time.sleep(1)
                 print("Espabila chaval")
+                time.sleep(2)
 
                 self.inventario.añadirObjeto(obj.polvo)
                 print("Has añadido polvo a tu inventario.")
+                time.sleep(1.5)
+                tools.pasarFase()
 
             elif opcion == 2:
                 tools.clear()
                 print("Examinas los mecanismos raros. No entiendes para qué sirven.")
-                time.sleep(1)
+                time.sleep(1.5)
                 puzleResuelto = puz.puzleInterruptores()
                 if puzleResuelto:
                     tools.clear()
                     print("Se abre un compartimento secreto.")
+                    time.sleep(1.5)
                     print("Has encontrado una tarjeta de seguridad avanzada.")
+                    time.sleep(1)
                     self.inventario.añadirObjeto(obj.tarjetaSeguridadAvanzada)
                     print("Has encontrado una linterna.")
+                    time.sleep(1)
                     self.inventario.añadirObjeto(obj.linterna)
+                    time.sleep(1.5)
+                    tools.pasarFase()
 
             elif opcion == 3:
                 tools.clear()
@@ -495,7 +567,9 @@ def opcionesSalaControl(self):
 
             if opcion == 1:
                 tools.clear()
-                print("Examinas las pantallas de seguridad. Muestran diferentes áreas de la prisión.")
+                print(
+                    "Examinas las pantallas de seguridad. Muestran diferentes áreas de la prisión."
+                )
                 time.sleep(2)
                 print("Ves cámaras en: Celda, Pasillo, Comedor y Patio.")
                 time.sleep(2)
@@ -508,7 +582,9 @@ def opcionesSalaControl(self):
                 self.inventario.añadirObjeto(obj.documentoSecreto)
                 print("Has añadido un documento secreto a tu inventario.")
                 time.sleep(2)
-                print("El documento menciona algo sobre 'el orden en que caen los presos'...")
+                print(
+                    "El documento menciona algo sobre 'el orden en que caen los presos'..."
+                )
                 time.sleep(2)
 
             elif opcion == 3:
@@ -529,10 +605,11 @@ def opcionesSalaControl(self):
                     print("El panel ya está reparado y funcionando correctamente.")
                 else:
                     # Verificar si tiene los objetos necesarios
-                    if (self.inventario.tieneObjeto(obj.trozoCable) and
-                        self.inventario.tieneObjeto(obj.destornillador) and
-                        self.inventario.tieneObjeto(obj.tarjetaMagnetica)):
-
+                    if (
+                        self.inventario.tieneObjeto(obj.trozoCable)
+                        and self.inventario.tieneObjeto(obj.destornillador)
+                        and self.inventario.tieneObjeto(obj.tarjetaMagnetica)
+                    ):
                         print("\nTienes todo lo necesario para reparar el panel:")
                         print("✓ Trozo de cable")
                         print("✓ Destornillador")
@@ -587,7 +664,9 @@ def opcionesSalaControl(self):
                 tools.clear()
                 print("Te acercas sigilosamente al policía dormido...")
                 time.sleep(2)
-                print(self.jugador1.nombre + ": No puedo hacer esto. No soy un asesino.")
+                print(
+                    self.jugador1.nombre + ": No puedo hacer esto. No soy un asesino."
+                )
                 print("Decides buscar otra forma de escapar.")
                 time.sleep(2)
 
@@ -649,7 +728,9 @@ def opcionesPatioExterior(self):
 
             if opcion == 1:
                 tools.clear()
-                print("Das una vuelta por el patio. El aire fresco se siente bien después de tanto tiempo encerrado.")
+                print(
+                    "Das una vuelta por el patio. El aire fresco se siente bien después de tanto tiempo encerrado."
+                )
                 time.sleep(2)
                 print("Ves el cielo nocturno por primera vez en mucho tiempo.")
                 print("Las estrellas brillan intensamente.")
@@ -657,10 +738,15 @@ def opcionesPatioExterior(self):
 
             elif opcion == 2:
                 tools.clear()
-                print(self.jugador1.nombre + ": Mmm, quizás debería hacer algo de ejercicio...")
+                print(
+                    self.jugador1.nombre
+                    + ": Mmm, quizás debería hacer algo de ejercicio..."
+                )
                 time.sleep(2)
                 print("Haces algunas flexiones y sentadillas.")
-                print("Te sientes un poco más fuerte, pero no es momento para entrenar.")
+                print(
+                    "Te sientes un poco más fuerte, pero no es momento para entrenar."
+                )
                 time.sleep(2)
 
             elif opcion == 3:
@@ -668,7 +754,9 @@ def opcionesPatioExterior(self):
                 print("Examinas la trampilla metálica en el suelo.")
                 time.sleep(1)
                 if self.inventario.tieneObjeto(obj.tarjetaSeguridadAvanzada):
-                    print("Usas la tarjeta de seguridad avanzada en el lector de la trampilla.")
+                    print(
+                        "Usas la tarjeta de seguridad avanzada en el lector de la trampilla."
+                    )
                     time.sleep(2)
                     print("¡CLIC! La trampilla se desbloquea.")
                     print("Puedes ver unas escaleras que descienden a la oscuridad.")
@@ -679,7 +767,9 @@ def opcionesPatioExterior(self):
                     return hab.tunelesSubterraneos
                 else:
                     print("La trampilla tiene una cerradura electrónica.")
-                    print("Necesitas una tarjeta de seguridad de alto nivel para abrirla.")
+                    print(
+                        "Necesitas una tarjeta de seguridad de alto nivel para abrirla."
+                    )
                     time.sleep(1)
 
             elif opcion == 4:
@@ -702,7 +792,9 @@ def opcionesPatioExterior(self):
                 if self.inventario.tieneObjeto(obj.linterna):
                     print("Usas la linterna para iluminar las zonas oscuras del patio.")
                     time.sleep(2)
-                    print("La luz revela algunos rincones ocultos, pero no hay nada importante aquí.")
+                    print(
+                        "La luz revela algunos rincones ocultos, pero no hay nada importante aquí."
+                    )
                     time.sleep(1)
                 else:
                     print("No tienes una linterna para iluminar la oscuridad.")
@@ -730,9 +822,9 @@ def opcionesTuneles(self):
 
     while EstadoMenu:
         tools.clear()
-        print("\n" + "="*50)
+        print("\n" + "=" * 50)
         print("TÚNELES SUBTERRÁNEOS")
-        print("="*50)
+        print("=" * 50)
         print("\nEstás en un lugar oscuro y húmedo.")
         print("El eco de las gotas de agua resuena en las paredes.")
 
@@ -753,7 +845,9 @@ def opcionesTuneles(self):
                 if self.inventario.tieneObjeto(obj.linterna):
                     print("Enciendes la linterna. La luz ilumina los túneles oscuros.")
                     time.sleep(2)
-                    print("Ves varios caminos que se bifurcan en diferentes direcciones.")
+                    print(
+                        "Ves varios caminos que se bifurcan en diferentes direcciones."
+                    )
                     print("Sin el mapa, sería imposible saber qué camino tomar.")
                     time.sleep(2)
                 else:
@@ -784,10 +878,14 @@ def opcionesTuneles(self):
                     print("No puedes navegar sin luz. Necesitas una linterna.")
                     time.sleep(1)
                 elif not self.inventario.tieneObjeto(obj.mapaAntiguo):
-                    print("Sin un mapa, te perderías en los túneles. Es demasiado peligroso.")
+                    print(
+                        "Sin un mapa, te perderías en los túneles. Es demasiado peligroso."
+                    )
                     time.sleep(1)
                 else:
-                    print("\nTienes todo lo necesario para intentar cruzar los túneles.")
+                    print(
+                        "\nTienes todo lo necesario para intentar cruzar los túneles."
+                    )
                     time.sleep(2)
 
                     if puz.puzleOrientacion():
@@ -826,9 +924,9 @@ def opcionesSalidaFinal(self):
 
     while EstadoMenu:
         tools.clear()
-        print("\n" + "="*60)
+        print("\n" + "=" * 60)
         print("                    SALIDA FINAL")
-        print("="*60)
+        print("=" * 60)
         print("\nFrente a ti hay una puerta metálica antigua y blindada.")
         print("Esta es tu última oportunidad de escapar...")
 
@@ -883,7 +981,9 @@ def opcionesSalidaFinal(self):
                 print("Necesitas ingresar un código de 3 dígitos.")
 
                 if self.inventario.tieneObjeto(obj.documentoSecreto):
-                    print("Recuerdas el documento que encontraste en la sala de control.")
+                    print(
+                        "Recuerdas el documento que encontraste en la sala de control."
+                    )
                     print("Mencionaba el código: 314")
 
                 codigo = input("Ingresa el código: ")
@@ -918,9 +1018,9 @@ def opcionesSalidaFinal(self):
                 # Si todos los mecanismos están desbloqueados
                 if mecanismo1 and mecanismo2 and mecanismo3:
                     tools.clear()
-                    print("\n" + "="*60)
+                    print("\n" + "=" * 60)
                     print("                ¡TODOS LOS MECANISMOS DESBLOQUEADOS!")
-                    print("="*60)
+                    print("=" * 60)
                     time.sleep(2)
                     print("\nLa puerta emite un sonido profundo...")
                     time.sleep(2)
@@ -934,17 +1034,21 @@ def opcionesSalidaFinal(self):
                     time.sleep(2)
 
                     # Final del juego
-                    print("\n" + "="*60)
+                    print("\n" + "=" * 60)
                     print("                    ¡HAS ESCAPADO!")
-                    print("="*60)
+                    print("=" * 60)
                     time.sleep(2)
-                    print(f"\n{self.jugador1.nombre}, sales por la puerta hacia la libertad.")
+                    print(
+                        f"\n{self.jugador1.nombre}, sales por la puerta hacia la libertad."
+                    )
                     time.sleep(2)
                     print("El aire fresco de la noche llena tus pulmones.")
                     time.sleep(2)
                     print("Corres hacia el bosque cercano sin mirar atrás.")
                     time.sleep(3)
-                    print("\nPero mientras te alejas, encuentras una nota en el suelo...")
+                    print(
+                        "\nPero mientras te alejas, encuentras una nota en el suelo..."
+                    )
                     time.sleep(2)
                     print("\nLa nota dice:")
                     print('"No todos los que escaparon lo hicieron libres..."')
@@ -955,9 +1059,9 @@ def opcionesSalidaFinal(self):
                     time.sleep(2)
                     print("¿O había una razón para que estuvieras allí?")
                     time.sleep(3)
-                    print("\n" + "="*60)
+                    print("\n" + "=" * 60)
                     print("                    FIN DEL JUEGO")
-                    print("="*60)
+                    print("=" * 60)
                     print("\n¡Gracias por jugar!")
                     print("Desarrollado para Dani")
                     time.sleep(3)
@@ -993,11 +1097,14 @@ def opcionesSalidaFinal(self):
 
 def flujoPrincipal(self, jugador):
     """Bucle principal del juego con sistema de navegación centralizado"""
-    print(f"Partida iniciada para {jugador.nombre}")
+    tools.clear()
+    print("\n" + "=" * 60)
+    print(f"       Partida iniciada para {jugador.nombre}")
+    print("=" * 60)
+    time.sleep(2)
     tools.pasarFase()
     Bienvenida(jugador.nombre)
     tools.pasarFase()
-    time.sleep(3)
     self.habitacionActual.entrar()
 
     # Bucle principal - evita recursión infinita
